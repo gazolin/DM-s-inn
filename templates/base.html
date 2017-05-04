@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<html>
+	
+	<head>
+		
+		<title>d&amp;d platform</title>
+
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"> </script>
+		<link href="https://fonts.googleapis.com/css?family=Shadows+Into+Light" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="static/dnd.css">
+		<link href="static/bootstrap.min.css" rel="stylesheet" media="screen">
+		 
+	</head>
+	
+	<body>
+
+		<div class="container" id=title>
+
+		  <!-- child template -->
+	      {% block content %}{% endblock %}
+
+	      <!-- errors -->
+	      {% if error %}
+	        <p class="error"><strong>Error:</strong> {{ error }}</p>
+	      {% endif %}
+
+	      <!-- messages -->
+	      {% for message in get_flashed_messages() %}
+	        {{ message }}
+	      {% endfor %}
+
+	    </div>
+
+  		<script type="text/javascript" src="static/dnd.js"></script>
+  </body>
+  
+</html>

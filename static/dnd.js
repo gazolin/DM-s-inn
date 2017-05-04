@@ -1,5 +1,1 @@
-document.getElementById("userPageBtn").onclick = function() {
-		window.location.href = "login";
-	};
-
-	$(".btn").css('cursor', 'pointer');
+$(".btn").css('cursor', 'pointer');

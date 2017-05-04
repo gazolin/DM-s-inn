@@ -1,46 +1,33 @@
-<html>
-	
-	<head>
-		
-		<title>d&amp;d platform</title>
+{% extends "base.html" %}
+{% block content %}
 
-		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"> </script>
-		<link href="https://fonts.googleapis.com/css?family=Shadows+Into+Light" rel="stylesheet">
-		<link rel="stylesheet" type="text/css" href="static/dnd.css">
-		 
-	</head>
-	
-	<body>
-		
-		<div id="title">
-			
-			<img src="static/dice.png" style="width:250px;height:250px;float:left;"> 
-			<img src="static/dice.png" style="width:250px;height:250px;float:right;">
-			
-			<div id="leftDice">
-				<h2> Hello There - Young Dungen Master </h2>
-			</div>
-			
-			<div>
-				<p class="small"> Welcome to the DM's Inn! </p>
-			</div>
-			
-			<div>
-				<button id="info" class="btn" style="font-size:30px;"> What can I do here? </button>
-			</div>
-			
-			<div>
-				<p class="small"> What would you like to do next? </p>
-			</div> 
-			
-			
-			<div>
-				<button id="createUserBtn" class="btn"> Create my user! </button>
-				<button id="userPageBtn" class="btn"> Enter my page </button>
-			</div>
+<img src="static/dice.png" style="width:250px;height:250px;float:left;"> 
+<img src="static/dice.png" style="width:250px;height:250px;float:right;">
 
-		</div>
+<div id="leftDice">
+	<h2> Hello There - Young Dungen Master </h2>
+</div>
+
+<div>
+	<p class="small"> Welcome to the DM's Inn! </p>
+</div>
+
+<div>
+	<button id="info" class="btn" style="font-size:30px;"> What can I do here? </button>
+</div>
+
+<div>
+	<p class="small"> What would you like to do next? </p>
+</div> 
+
+
+<div>
+	<form method="post">
+		<input class="btn" type="submit" name="firstButton" value="Enter my page">
+		<input class="btn" type="submit" name="firstButton" value="Create my User!">
+	</form>
+</div>
+
+{% endblock %}
+
 		
-		 <script type="text/javascript" src="static/dnd.js"></script>
-	</body>
-</html>

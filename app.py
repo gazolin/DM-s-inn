@@ -30,7 +30,7 @@ def welcome():
         if request.form['firstButton'] == "Enter my page":
             return redirect(url_for('login'))
         elif request.form['firstButton'] == "Create my User!":
-            return redirect(url_for('login'))
+            return redirect(url_for('signup'))
 
     elif request.method == 'GET':
 	   return render_template("welcome.html") # render a template
@@ -44,23 +44,39 @@ def dm_bar():
             return redirect(url_for('logout'))
 
     elif request.method == 'GET':
-       return render_template("dm_bar.html", posts=posts) # render a template
+       return render_template("dm_bar.html") # render a template
     
 
 # route for handling the login page logic
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    users = db.session.query(Users).all()
     error = None
     if request.method == 'POST':
-        if request.form['username'] != 'admin' or request.form['password'] != 'admin':
+        if (Users.query.filter(Users.name == request.form['username'] and Users.password == request.form['password']).first()) == None:
             error = 'Invalid Credentials. Please try again.'
         else:
             session['logged_in'] = True
             flash('You were just logged in!')
-
             return redirect(url_for('dm_bar'))
+
     return render_template('login.html', error=error)
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    error = None
+    if request.method == 'POST':
+        if (Users.query.filter(Users.name == request.form['username']).first()) != None:
+            error = 'Name already exists. Please pick another.'
+        else: 
+            user = Users(request.form.get('username'), request.form.get('password'))
+            db.session.add(user)
+            db.session.commit()
+            print "here"
+            session['logged_in'] = True
+            flash('Welcome - Dungeon Master! it was everyones first time once. ~WinK~')
+            return redirect(url_for('dm_bar'))
+
+    return render_template('signup.html', error=error)
 
 
 @app.route('/logout')

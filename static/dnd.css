@@ -29,6 +29,12 @@
 		text-decoration: none;
 	}
 
+	#bigbtn {
+		display: inline-block;
+		min-width: 300px;
+		width: 350px;
+	}
+
 	.btn:hover {
 		background: #3cb0fd;
 		background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);

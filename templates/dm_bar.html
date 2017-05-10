@@ -1,17 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
 
-
+<br><br><br>
 <div>
 	<form method="post">
-		<input class="btn" type="submit" name="homeButton" value="Create a new world" style="font-size:30px;">
-		<input class="btn" type="submit" name="homeButton" value="My worlds">
+		<input class="btn" id="bigbtn" type="submit" name="homeButton" value="Create a world">
+		<input class="btn" id="bigbtn" type="submit" name="homeButton" value="My worlds">
+		<br><br>
+		<input class="btn" id="bigbtn" type="submit" name="homeButton" value="Logout">
 	</form>
 </div>
 
-<br><br>
-<form method="post">
-	<input class="btn" type="submit" name="logout" value="Logout">
-</form>
 
 {% endblock %}

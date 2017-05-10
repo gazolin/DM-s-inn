@@ -39,7 +39,7 @@ def welcome():
 @app.route('/dm_bar', methods=['GET', 'POST'])
 @login_required
 def dm_bar():
-
+    flash('Welcome ' + session['name'] + '!')
     if request.method == 'POST':
         if request.form['logout'] == "Logout":
             return redirect(url_for('logout'))
@@ -56,12 +56,12 @@ def login():
     if request.method == 'POST':
         POST_USERNAME = str(request.form['username'])
         POST_PASSWORD = str(request.form['password'])
-        query = db.session.query(Users).filter(Users.name.in_( [POST_USERNAME]), Users.password.in_([POST_PASSWORD]) )
+        query = db.session.query(User).filter(User.name.in_( [POST_USERNAME]), User.password.in_([POST_PASSWORD]) )
         if (query.first() == None):
             error = 'Invalid Credentials. Please try again.'
         else:
             session['logged_in'] = True
-            flash('Welcome ' + POST_USERNAME) 
+            session['name'] = POST_USERNAME
             return redirect(url_for('dm_bar'))
 
     return render_template('login.html', error=error)
@@ -71,11 +71,11 @@ def signup():
     error = None
     if request.method == 'POST':
         POST_USERNAME = str(request.form['username'])
-        query = db.session.query(Users).filter(Users.name.in_([POST_USERNAME])) 
+        query = db.session.query(User).filter(User.name.in_([POST_USERNAME])) 
         if (query.first() != None):
             error = 'Name already exists. Please pick another.'
         else: 
-            user = Users(request.form.get('username'), request.form.get('password'))
+            user = User(request.form.get('username'), request.form.get('password'))
             db.session.add(user)
             db.session.commit()
             session['logged_in'] = True
@@ -92,8 +92,6 @@ def logout():
     session.pop('logged_in', None)
     flash('You were just logged out!')
     return redirect(url_for('welcome'))
-
-
 
 #start the server with the 'run()' method
 if __name__ == '__main__':

@@ -80,7 +80,7 @@ def signup():
             db.session.commit()
             session['logged_in'] = True
             flash('Welcome ' + POST_USERNAME)
-            flash('\nIt was everyones first time once. ~WinK~')
+            flash('It was everyones first time once. ~WinK~')
  
             return redirect(url_for('dm_bar'))
 

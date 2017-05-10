@@ -5,8 +5,7 @@ from models import Users
 db.create_all()
 
 #insert
-db.session.add(Users("admin", "admin"))
-db.session.add(Users("uri", "1234"))
+
 
 #commit the changes
 db.session.commit()

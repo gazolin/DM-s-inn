@@ -2,10 +2,11 @@ from flask import Flask, render_template, redirect, url_for, request, session, f
 from functools import wraps
 from flask_sqlalchemy import SQLAlchemy
 
+#create the application object
 app = Flask(__name__)
-app.secret_key = "temp key"
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+
+#config
+app.config.from_object('config.BaseConfig')
 
 #create the sqlalchemy object
 db = SQLAlchemy(app)
@@ -50,13 +51,17 @@ def dm_bar():
 # route for handling the login page logic
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+ 
     error = None
     if request.method == 'POST':
-        if (Users.query.filter(Users.name == request.form['username'] and Users.password == request.form['password']).first()) == None:
+        POST_USERNAME = str(request.form['username'])
+        POST_PASSWORD = str(request.form['password'])
+        query = db.session.query(Users).filter(Users.name.in_( [POST_USERNAME]), Users.password.in_([POST_PASSWORD]) )
+        if (query.first() == None):
             error = 'Invalid Credentials. Please try again.'
         else:
             session['logged_in'] = True
-            flash('You were just logged in!')
+            flash('Welcome ' + POST_USERNAME) 
             return redirect(url_for('dm_bar'))
 
     return render_template('login.html', error=error)
@@ -65,15 +70,18 @@ def login():
 def signup():
     error = None
     if request.method == 'POST':
-        if (Users.query.filter(Users.name == request.form['username']).first()) != None:
+        POST_USERNAME = str(request.form['username'])
+        query = db.session.query(Users).filter(Users.name.in_([POST_USERNAME])) 
+        if (query.first() != None):
             error = 'Name already exists. Please pick another.'
         else: 
             user = Users(request.form.get('username'), request.form.get('password'))
             db.session.add(user)
             db.session.commit()
-            print "here"
             session['logged_in'] = True
-            flash('Welcome - Dungeon Master! it was everyones first time once. ~WinK~')
+            flash('Welcome ' + POST_USERNAME)
+            flash('\nIt was everyones first time once. ~WinK~')
+ 
             return redirect(url_for('dm_bar'))
 
     return render_template('signup.html', error=error)

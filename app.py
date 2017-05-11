@@ -4,14 +4,15 @@ from flask_sqlalchemy import SQLAlchemy
 
 #create the application object
 app = Flask(__name__)
-
 #config
 app.config.from_object('config.BaseConfig')
-
 #create the sqlalchemy object
 db = SQLAlchemy(app)
-
 from models import *
+#create the database and the db tables
+db.create_all()
+#commit the changes
+db.session.commit()
 
 # login required decorator
 def login_required(f):
@@ -39,19 +40,32 @@ def welcome():
 @app.route('/dm_bar', methods=['GET', 'POST'])
 @login_required
 def dm_bar():
-    flash('Welcome ' + session['name'] + '!')
+    if (session['first'] == False):
+        flash('Welcome ' + session['name'] + '!')
     if request.method == 'POST':
-        if request.form['logout'] == "Logout":
+        if request.form['homeButton'] == "Logout":
+            return redirect(url_for('logout'))
+        if request.form['homeButton'] == "My worlds":
+            return redirect(url_for('worlds'))
+
+    elif request.method == 'GET':
+        return render_template("dm_bar.html") # render a template
+
+
+@app.route('/worlds', methods=['GET', 'POST'])
+@login_required
+def worlds():
+    if request.method == 'POST':
+        if request.form['worldsButton'] == "Logout":
             return redirect(url_for('logout'))
 
     elif request.method == 'GET':
-       return render_template("dm_bar.html") # render a template
-    
+        return render_template("worlds.html") # render a template
+
 
 # route for handling the login page logic
 @app.route('/login', methods=['GET', 'POST'])
 def login():
- 
     error = None
     if request.method == 'POST':
         POST_USERNAME = str(request.form['username'])
@@ -62,6 +76,7 @@ def login():
         else:
             session['logged_in'] = True
             session['name'] = POST_USERNAME
+            session['first'] = False
             return redirect(url_for('dm_bar'))
 
     return render_template('login.html', error=error)
@@ -79,6 +94,8 @@ def signup():
             db.session.add(user)
             db.session.commit()
             session['logged_in'] = True
+            session['name'] = POST_USERNAME
+            session['first'] = True
             flash('Welcome ' + POST_USERNAME)
             flash('It was everyones first time once. ~WinK~')
  
@@ -86,10 +103,10 @@ def signup():
 
     return render_template('signup.html', error=error)
 
-
 @app.route('/logout')
 def logout():
     session.pop('logged_in', None)
+    session.pop('name', None)
     flash('You were just logged out!')
     return redirect(url_for('welcome'))
 

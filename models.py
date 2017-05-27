@@ -27,16 +27,16 @@ class World(db.Model):
 	name = db.Column(db.String, nullable=False)
 	description = db.Column(db.String, nullable=False)
 	charCount = db.Column(db.Integer, nullable=False)
-	creationTime = db.Column(db.DateTime, onupdate=datetime.datetime.now)
+	#creationTime = db.Column(db.DateTime, onupdate=datetime.datetime.now)
 
 
 
-	def __init__(self, user_id, name, decription, charCount, creationTime):
+	def __init__(self, user_id, name, description, charCount):
 		self.user_id = user_id
 		self.name = name
 		self.description = description
 		self.charCount = charCount
-		self.creationTime = creationTime
+		#self.creationTime = creationTime
 
 class Character(db.Model):
 

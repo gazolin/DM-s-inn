@@ -45,7 +45,9 @@ def dm_bar():
     if request.method == 'POST':
         if request.form['homeButton'] == "Logout":
             return redirect(url_for('logout'))
-        if request.form['homeButton'] == "My worlds":
+        if request.form['homeButton'] == "Create a World":
+            return redirect(url_for('world_creation'))
+        if request.form['homeButton'] == "My Worlds":
             return redirect(url_for('worlds'))
 
     elif request.method == 'GET':
@@ -55,12 +57,31 @@ def dm_bar():
 @app.route('/worlds', methods=['GET', 'POST'])
 @login_required
 def worlds():
+    session.pop('_flashes', None)
     if request.method == 'POST':
         if request.form['worldsButton'] == "Logout":
             return redirect(url_for('logout'))
-
     elif request.method == 'GET':
         return render_template("worlds.html") # render a template
+
+@app.route('/world_creation', methods=['GET', 'POST'])
+@login_required
+def world_creation():
+    session.pop('_flashes', None)
+    if request.method == 'POST':
+        worldName = str(request.form['worldName'])
+        world_description = str(request.form['worldDescription'])
+
+        world = World(1, request.form.get('worldName'), request.form.get('worldDescription'), 0)
+        db.session.add(world)
+        db.session.commit()
+
+        #if request.form['worldsButton'] == "worldName":
+            #return redirect(url_for('logout'))
+        return redirect(url_for('worlds'))
+
+    elif request.method == 'GET':
+        return render_template("world_creation.html") # render a template
 
 
 # route for handling the login page logic
@@ -68,14 +89,14 @@ def worlds():
 def login():
     error = None
     if request.method == 'POST':
-        POST_USERNAME = str(request.form['username'])
-        POST_PASSWORD = str(request.form['password'])
-        query = db.session.query(User).filter(User.name.in_( [POST_USERNAME]), User.password.in_([POST_PASSWORD]) )
+        userName = str(request.form['username'])
+        password = str(request.form['password'])
+        query = db.session.query(User).filter(User.name.in_( [userName]), User.password.in_([password]) )
         if (query.first() == None):
             error = 'Invalid Credentials. Please try again.'
         else:
             session['logged_in'] = True
-            session['name'] = POST_USERNAME
+            session['name'] = userName
             session['first'] = False
             return redirect(url_for('dm_bar'))
 
@@ -85,8 +106,8 @@ def login():
 def signup():
     error = None
     if request.method == 'POST':
-        POST_USERNAME = str(request.form['username'])
-        query = db.session.query(User).filter(User.name.in_([POST_USERNAME])) 
+        userName = str(request.form['username'])
+        query = db.session.query(User).filter(User.name.in_([userName])) 
         if (query.first() != None):
             error = 'Name already exists. Please pick another.'
         else: 
@@ -94,9 +115,9 @@ def signup():
             db.session.add(user)
             db.session.commit()
             session['logged_in'] = True
-            session['name'] = POST_USERNAME
+            session['name'] = userName
             session['first'] = True
-            flash('Welcome ' + POST_USERNAME)
+            flash('Welcome ' + userName)
             flash('It was everyones first time once. ~WinK~')
  
             return redirect(url_for('dm_bar'))

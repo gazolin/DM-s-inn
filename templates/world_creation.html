@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!--
+<form action="" method="post">
+  <input type="text" placeholder="worldName" name="worldName" value="{{
+    request.form.username }}">
+   <input <textarea type="bigText" cols="40" rows="5" </textarea> placeholder="description" name="description" value="{{
+    request.form.description }}">
+  <input class="btn btn-default" type="submit" value="create World">
+</form>
+ -->     
+
+<div class="form_container">  
+ 	<form id="forms" action="" method="post">
+
+	    <h3>Create A New World</h3>
+
+	    <fieldset>
+	      <input type="text" placeholder="World Name"  tabindex="1" name="worldName" required autofocus value="{{
+	    request.form.worldName }}">
+	    </fieldset>
+
+	    <fieldset>
+	      <textarea placeholder="Type Your Worlds Description Here...." tabindex="2" name="worldDescription" required value="{{
+	    request.form.worldDescription }}"></textarea>
+	    </fieldset>
+
+	    <fieldset>
+	      <input class="btn btn-default" type="submit" value="Create World">
+	    </fieldset>
+
+  	</form>
+</div>
+
+      
+{% endblock %}

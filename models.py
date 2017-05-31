@@ -11,12 +11,11 @@ class User(db.Model):
 	password = db.Column(db.String, nullable=False)
 
 	def __init__(self, name, password):
-		self.id = id
 		self.name = name
 		self.password = password
 
 	def __repr__(self):
-		return '{}'.format(self.id)
+		return '<User %r>' % (self.id)
 
 
 class World(db.Model):

@@ -61,8 +61,10 @@ def worlds():
     if request.method == 'POST':
         if request.form['worldsButton'] == "Logout":
             return redirect(url_for('logout'))
+
     elif request.method == 'GET':
-        return render_template("worlds.html") # render a template
+        worlds = World.query.filter(World.user_id == session['id']).all()
+        return render_template("worlds.html", title="Worlds", worlds=worlds)
 
 @app.route('/world_creation', methods=['GET', 'POST'])
 @login_required
@@ -71,8 +73,7 @@ def world_creation():
     if request.method == 'POST':
         worldName = str(request.form['worldName'])
         world_description = str(request.form['worldDescription'])
-
-        world = World(1, request.form.get('worldName'), request.form.get('worldDescription'), 0)
+        world = World(session['id'], request.form.get('worldName'), request.form.get('worldDescription'), 0)
         db.session.add(world)
         db.session.commit()
 
@@ -98,6 +99,7 @@ def login():
             session['logged_in'] = True
             session['name'] = userName
             session['first'] = False
+            session['id'] = str(query.first())
             return redirect(url_for('dm_bar'))
 
     return render_template('login.html', error=error)

@@ -11,11 +11,12 @@ class User(db.Model):
 	password = db.Column(db.String, nullable=False)
 
 	def __init__(self, name, password):
+		self.id = id
 		self.name = name
 		self.password = password
 
 	def __repr__(self):
-		return '{}-{}'.format(self.name, self.password)
+		return '{}'.format(self.id)
 
 
 class World(db.Model):
@@ -28,6 +29,9 @@ class World(db.Model):
 	description = db.Column(db.String, nullable=False)
 	charCount = db.Column(db.Integer, nullable=False)
 	#creationTime = db.Column(db.DateTime, onupdate=datetime.datetime.now)
+
+ 	def __repr__(self):
+		return '<World %r>' % (self.name)
 
 
 

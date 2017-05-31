@@ -28,6 +28,7 @@ def login_required(f):
 
 @app.route('/', methods=['GET', 'POST'])
 def welcome():
+    session.pop('_flashes', None)
     if request.method == 'POST':
         if request.form['firstButton'] == "Enter my page":
             return redirect(url_for('login'))
@@ -35,7 +36,7 @@ def welcome():
             return redirect(url_for('signup'))
 
     elif request.method == 'GET':
-	   return render_template("welcome.html") # render a template
+       return render_template("welcome.html") # render a template
 
 @app.route('/dm_bar', methods=['GET', 'POST'])
 @login_required
@@ -92,7 +93,7 @@ def login():
     if request.method == 'POST':
         userName = str(request.form['username'])
         password = str(request.form['password'])
-        query = db.session.query(User).filter(User.name.in_( [userName]), User.password.in_([password]) )
+        query = db.session.query(User).filter(User.name.in_([userName]), User.password.in_([password]) )
         if (query.first() == None):
             error = 'Invalid Credentials. Please try again.'
         else:
@@ -109,6 +110,7 @@ def signup():
     error = None
     if request.method == 'POST':
         userName = str(request.form['username'])
+        password = str(request.form['password'])
         query = db.session.query(User).filter(User.name.in_([userName])) 
         if (query.first() != None):
             error = 'Name already exists. Please pick another.'
@@ -116,9 +118,11 @@ def signup():
             user = User(request.form.get('username'), request.form.get('password'))
             db.session.add(user)
             db.session.commit()
+            query = db.session.query(User).filter(User.name.in_([userName]), User.password.in_([password]) )
             session['logged_in'] = True
             session['name'] = userName
             session['first'] = True
+            session['id'] = str(query.first())
             flash('Welcome ' + userName)
             flash('It was everyones first time once. ~WinK~')
  
@@ -135,4 +139,4 @@ def logout():
 
 #start the server with the 'run()' method
 if __name__ == '__main__':
-	app.run(debug=True)
+    app.run(debug=True)

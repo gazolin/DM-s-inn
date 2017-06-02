@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div>
+	<h4> Hello There - Dungeon Master </h4>
+</div>
+
+<img src="static/dice.png" style="width:150px;height:150px;float:left;"> 
+<img src="static/dice.png" style="width:150px;height:150px;float:right;">
+
+<div>
+	<p class="small" style="font-size:70%;"> Welcome to the DM's Inn! </p>
+	<p class="small" style="font-size:70%;">  What would you like to do next?</p>
+</div>
+
+<div>
+	<form method="post">
+		<input class="btn" type="submit" name="firstButton" value="Enter my page">
+		<input class="btn" type="submit" name="firstButton" value="Create my User!">
+	</form>
+</div>
+
+{% endblock %}
+
+		

@@ -2,7 +2,6 @@
 
 body {
 	background-color: black;
-
   top:0;
   bottom:0;
   left:0;
@@ -11,7 +10,7 @@ body {
 }
 
 p.small {
-	line-height: 80%;
+	line-height: 60%;
 }
 
  #title {
@@ -32,7 +31,7 @@ p.small {
 	border-radius: 28px;
 	font-family: 'Shadows Into Light', cursive;
 	color: #000000;
-	font-size: 50px;
+	font-size: 40px;
 	padding: 10px 20px 10px 20px;
 	text-decoration: none;
 }

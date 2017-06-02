@@ -1,4 +1,6 @@
 from app import db
+from project.users.views import bcrypt
+
 from sqlalchemy import Table, Column, Integer, ForeignKey
 import datetime
 
@@ -12,7 +14,7 @@ class User(db.Model):
 
 	def __init__(self, name, password):
 		self.name = name
-		self.password = password
+		self.password = bcrypt.generate_password_hash(password)
 
 	def __repr__(self):
 		return '<User %r>' % (self.id)
